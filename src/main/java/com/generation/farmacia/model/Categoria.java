@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,6 +27,7 @@ public class Categoria {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) // vai gerar minha chave primária com Autoincrement no meu banco de dados
 	private Long id;
 	
+	@Schema(example = "Classe de remédio Antibiótico")
 	@NotBlank(message= "O atributo tipo é de prenchimento obrigatório") // Not null no banco de dados
 	@Size(min = 5, max = 100, message = "O atributo tipo tem no mínimo 5 caracteres e no máximo 100 caracteres.")
 	private String tipo;
@@ -40,7 +42,16 @@ public class Categoria {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "categoria", cascade = CascadeType.REMOVE)
 	@JsonIgnoreProperties("categoria")
 	private List<Produto> produto;
+
+	public Categoria(Long id, String tipo, String descricao, LocalDateTime data) {
+		this.id = id;
+		this.tipo = tipo;
+		this.descricao = descricao;
+		this.data = data;
+	}
 	
+	public Categoria() {
+	}
 
 	public Long getId() {
 		return id;
